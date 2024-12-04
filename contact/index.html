@@ -698,101 +698,199 @@ input[type='submit']{
 
                 <div class="gf_browser_unknown gform_wrapper gravity-theme" id="gform_wrapper_1" style="display:none">
 <div id="gf_1" class="gform_anchor" tabindex="-1"></div>
-<form
-  action="https://formspree.io/f/mgverajp"
-  method="POST"
-  style="width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; font-family: Arial, sans-serif;"
->
-  <div style="margin-bottom: 15px;">
-    <label for="first-name" style="display: block; margin-bottom: 5px;">First Name</label>
-    <input
-      type="text"
-      id="first-name"
-      name="first-name"
-      style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-    />
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label for="last-name" style="display: block; margin-bottom: 5px;">Last Name</label>
-    <input
-      type="text"
-      id="last-name"
-      name="last-name"
-      style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-    />
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label for="phone" style="display: block; margin-bottom: 5px;">Phone</label>
-    <input
-      type="tel"
-      id="phone"
-      name="phone"
-      style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-    />
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-    />
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label style="display: block; margin-bottom: 5px;">Do you wish to include your service location?</label>
-    <input type="checkbox" id="service-location" name="service-location" />
-    <label for="service-location" style="margin-left: 5px;">Yes</label>
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label style="display: block; margin-bottom: 5px;">Preferred method of contact</label>
-    <div style="margin-bottom: 5px;">
-      <input
-        type="radio"
-        id="contact-email"
-        name="preferred-contact"
-        value="Email"
-      />
-      <label for="contact-email" style="margin-left: 5px;">Email</label>
-    </div>
-    <div style="margin-bottom: 5px;">
-      <input
-        type="radio"
-        id="contact-text"
-        name="preferred-contact"
-        value="Text Message"
-        checked
-      />
-      <label for="contact-text" style="margin-left: 5px;">Text Message</label>
-    </div>
-    <div>
-      <input
-        type="radio"
-        id="contact-phone"
-        name="preferred-contact"
-        value="Phone Call"
-      />
-      <label for="contact-phone" style="margin-left: 5px;">Phone Call</label>
-    </div>
-  </div>
-  <div style="margin-bottom: 15px;">
-    <label for="message" style="display: block; margin-bottom: 5px;">Message</label>
-    <textarea
-      id="message"
-      name="message"
-      rows="5"
-      style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-    ></textarea>
-  </div>
-  <div>
-    <button
-      type="submit"
-      style="background-color: #d9534f; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;"
-    >
-      Submit
-    </button>
-  </div>
-</form>
+<form action="https://formspree.io/f/mgverajp" onsubmit="compileAddressURL(event)" method="POST" style='width: 100%; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; font-family: "Public Sans", Arial, sans-serif;'>
+	<div style="margin-bottom: 15px;">
+	  <label for="first-name" style="display: block; margin-bottom: 5px;">First Name</label>
+	  <input type="text" id="first-name" name="First Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+	</div>
+	<div style="margin-bottom: 15px;">
+	  <label for="last-name" style="display: block; margin-bottom: 5px;">Last Name</label>
+	  <input type="text" id="last-name" name="Last Name" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+	</div>
+	<div style="margin-bottom: 15px;">
+	  <label for="phone" style="display: block; margin-bottom: 5px;">Phone</label>
+	  <input type="telephone" id="phone" name="Phone" placeholder="555-5555-5555" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+	</div>
+	<div style="margin-bottom: 15px;">
+	  <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+	  <input type="email" id="email" name="Email" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+	</div>
+	<div style="margin-bottom: 15px;">
+	  <label style="display: block; margin-bottom: 5px;">Do you wish to include your service location?</label>
+	  <input type="checkbox" id="service-location-toggle" name="Service Location" onchange="toggleAddressInput()">
+	  <label for="service-location-toggle" style="margin-left: 5px;">Yes</label>
+	</div>
+	<input type=hidden id="ServiceAddress" name="Service address" type="text"/>
+	<input type=hidden id="mapUrl" name="Navigate to service address" type="text"/>
+	<div class="service-location" style="display: none;margin-bottom: 15px;">
+		<label for="street-address">Service Address</label>
+		<input type="text" name="street" id="street-address" placeholder="Street" >
+    	<fieldset class="locale" style="margin-top: 15px;">
+		<input type="text" id="city" name="city" placeholder="City" >
+		<select id="state" name="state">
+			<option value="" selected="" disabled="">State</option>
+			<option value="AL">Alabama</option>
+			<option value="AK">Alaska</option>
+			<option value="AZ">Arizona</option>
+			<option value="AR">Arkansas</option>
+			<option value="CA">California</option>
+			<option value="CO">Colorado</option>
+			<option value="CT">Connecticut</option>
+			<option value="DE">Delaware</option>
+			<option value="DC">District Of Columbia</option>
+			<option value="FL">Florida</option>
+			<option value="GA">Georgia</option>
+			<option value="HI">Hawaii</option>
+			<option value="ID">Idaho</option>
+			<option value="IL">Illinois</option>
+			<option value="IN">Indiana</option>
+			<option value="IA">Iowa</option>
+			<option value="KS">Kansas</option>
+			<option value="KY">Kentucky</option>
+			<option value="LA">Louisiana</option>
+			<option value="ME">Maine</option>
+			<option value="MD">Maryland</option>
+			<option value="MA">Massachusetts</option>
+			<option value="MI">Michigan</option>
+			<option value="MN">Minnesota</option>
+			<option value="MS">Mississippi</option>
+			<option value="MO">Missouri</option>
+			<option value="MT">Montana</option>
+			<option value="NE">Nebraska</option>
+			<option value="NV">Nevada</option>
+			<option value="NH">New Hampshire</option>
+			<option value="NJ">New Jersey</option>
+			<option value="NM">New Mexico</option>
+			<option value="NY">New York</option>
+			<option value="NC">North Carolina</option>
+			<option value="ND">North Dakota</option>
+			<option value="OH">Ohio</option>
+			<option value="OK">Oklahoma</option>
+			<option value="OR">Oregon</option>
+			<option value="PA">Pennsylvania</option>
+			<option value="RI">Rhode Island</option>
+			<option value="SC">South Carolina</option>
+			<option value="SD">South Dakota</option>
+			<option value="TN">Tennessee</option>
+			<option value="TX">Texas</option>
+			<option value="UT">Utah</option>
+			<option value="VT">Vermont</option>
+			<option value="VA">Virginia</option>
+			<option value="WA">Washington</option>
+			<option value="WV">West Virginia</option>
+			<option value="WI">Wisconsin</option>
+			<option value="WY">Wyoming</option>
+		</select>
+		<input type="text" id="postal-code" name="postal-code" placeholder="12345">
+    </fieldset>
+	</div>
+	<div style="margin-bottom: 15px;">
+		<label style="display: block; margin-bottom: 5px;">Preferred method of contact</label>
+		<div style="margin-bottom: 5px;">
+		<input type="radio" id="contact-email" name="Preferred contact method" value="Email">
+		<label for="contact-email" style="margin-left: 5px;">Email</label>
+	  </div>
+	  <div style="margin-bottom: 5px;">
+		<input type="radio" id="contact-text" name="Preferred contact method" value="Text Message" checked="">
+		<label for="contact-text" style="margin-left: 5px;">Text Message</label>
+	  </div>
+	  <div>
+		<input type="radio" id="contact-phone" name="Preferred contact method" value="Phone Call">
+		<label for="contact-phone" style="margin-left: 5px;">Phone Call</label>
+	  </div>
+	</div>
+	<div style="margin-bottom: 15px;">
+	  <label for="message" style="display: block; margin-bottom: 5px;">Message</label>
+	  <textarea id="message" name="Message" rows="5" placeholder='Tell us on how we can help' style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+	</div>
+	<div>
+	  <button type="submit" style="background-color: #d9534f; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+		Submit
+	  </button>
+	</div>
+  </form>
+  <style>/* address, locale */
+	fieldset.locale input[name="city"],
+	fieldset.locale select[name="state"],
+	fieldset.locale input[name="postal-code"] {
+	  display: inline;
+	}
+	fieldset.locale input[name="city"] {
+	  width: 52%;
+	}
+	fieldset.locale select[name="state"],
+	fieldset.locale input[name="postal-code"] {
+	  width: 20%;
+	}
+	fieldset.locale input[name="city"],
+	fieldset.locale select[name="state"] {
+	  margin-right: 3%;
+	}</style>
+  <script>
+	function toggleAddressInput() {
+	  const addressInput = document.querySelector('.service-location');
+	  const serviceLocationCheckbox = document.getElementById('service-location-toggle');
+	  addressInput.style.display = serviceLocationCheckbox.checked ? 'block' : 'none';
+	}
+	function compileAddressURL(event) {
+		// Prevent the default form submission
+		event.preventDefault();
+
+		// Retrieve the address fields
+		const streetInput = document.getElementById('street-address');
+		const cityInput = document.getElementById('city');
+		const stateInput = document.getElementById('state');
+		const postalCodeInput = document.getElementById('postal-code');
+
+		// Check if the service location checkbox is selected
+		const serviceLocationToggle = document.getElementById('service-location-toggle');
+		const mapLink = document.querySelector('input#mapUrl');
+		const streetAddress = document.querySelector('#ServiceAddress');
+		if (serviceLocationToggle.checked) {
+			const street = streetInput.value.trim();
+			const city = cityInput.value.trim();
+			const state = stateInput.value.trim();
+			const postalCode = postalCodeInput.value.trim();
+			// Validate that all required fields are filled
+			const errors = [];
+			if (!street) errors.push("Street address is required.");
+			if (!city) errors.push("City is required.");
+			if (!state) errors.push("State is required.");
+			if (!postalCode) errors.push("Postal code is required.");
+
+			// If there are errors, display them and prevent form submission
+			if (errors.length > 0) {
+				alert("Please complete the following fields before submitting:\n" + errors.join("\n"));
+				return; // Stop the form submission
+			}
+			
+
+			// Compile the address into a URL
+			const address = encodeURIComponent(`${street}, ${city}, ${state} ${postalCode}`);
+			const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${address}`;
+
+			// Append the URL as a hidden field to the form
+			
+			mapLink.value = mapsUrl;
+			streetAddress.value= `${street}, ${city}, ${state} ${postalCode}`;
+		} else {
+			mapLink.disabled = 'true';
+			streetAddress.value = 'Not provided';
+		}
+
+		serviceLocationToggle.disabled = 'true';
+		streetInput.disabled = 'true';
+		cityInput.disabled = 'true';
+		stateInput.disabled = 'true';
+		postalCodeInput.disabled = 'true';
+
+		// Submit the form
+		document.querySelector('form').submit();
+	}
+
+
+  </script>
+  
 
                         </div>
                 <iframe style="display:none;width:0px;height:0px;" src="about:blank" name="gform_ajax_frame_1" id="gform_ajax_frame_1" title="This iframe contains the logic required to handle Ajax powered Gravity Forms."></iframe>

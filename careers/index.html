@@ -794,7 +794,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input
         type="text"
         id="first-name"
-        name="first-name"
+        name="First Name"
         style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
       />
     </div>
@@ -803,7 +803,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input
         type="text"
         id="last-name"
-        name="last-name"
+        name="Last Name"
         style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
       />
     </div>
@@ -813,16 +813,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <input
       type="email"
       id="email"
-      name="email"
+      name="Email"
       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
     />
   </div>
   <div style="margin-bottom: 15px;">
     <label for="phone" style="display: block; margin-bottom: 5px;">Phone</label>
     <input
-      type="tel"
+      type="telephone"
       id="phone"
-      name="phone"
+      name="Phone"
       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
     />
   </div>
@@ -832,7 +832,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input
         type="radio"
         id="contact-email"
-        name="preferred-contact"
+        name="Preferred Contact"
         value="Email"
       />
       <label for="contact-email" style="margin-left: 5px;">Email</label>
@@ -841,7 +841,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input
         type="radio"
         id="contact-text"
-        name="preferred-contact"
+        name="Preferred Contact"
         value="Text Message"
         checked
       />
@@ -851,7 +851,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input
         type="radio"
         id="contact-phone"
-        name="preferred-contact"
+        name="Preferred Contact"
         value="Phone Call"
       />
       <label for="contact-phone" style="margin-left: 5px;">Phone Call</label>
@@ -861,17 +861,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <label for="message" style="display: block; margin-bottom: 5px;">Tell us about yourself</label>
     <textarea
       id="message"
-      name="message"
+      name="Message"
       rows="5"
+	  placeholder="Tell us a little about yourself"
       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
     ></textarea>
   </div>
-  <div style="margin-bottom: 15px; border: 1px dashed #ccc; padding: 10px; border-radius: 4px; text-align: center;">
+  <div style="margin-bottom: 15px; border: 1px dashed #ccc; padding: 10px; border-radius: 4px; text-align: center;"  ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
     <label for="file-upload" style="display: block; margin-bottom: 10px;">Attachments</label>
     <input
       type="file"
       id="file-upload"
-      name="attachments"
+      name="Attachments"
       multiple
       style="display: none;"
       onchange="updateFileList(this)"
@@ -880,7 +881,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       for="file-upload"
       style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 4px; cursor: pointer;"
     >
-      Select files
+      Drag and Drop
     </label>
     <p style="margin: 10px 0; font-size: 12px; color: #666;">Max. file size: 25 MB, Max. files: 5.</p>
     <ul id="file-list" style="list-style: none; padding: 0; margin-top: 10px; font-size: 14px; color: #333;"></ul>
@@ -896,21 +897,73 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </form>
 
 <script>
-  function updateFileList(input) {
-    const fileList = document.getElementById("file-list");
-    fileList.innerHTML = ""; // Clear the existing file list
+	function dragOverHandler(ev) {
+		console.log("File(s) in drop zone");
+		ev.preventDefault(); // Prevent default behavior (Prevent file from being opened)
+		ev.dataTransfer.dropEffect = "copy"; // Indicate a copy operation
+	}
 
+	// Handle the drop event and populate the input element
+	function dropHandler(event) {
+		event.preventDefault();
+		console.log("Files dropped");
+
+		// Access the dropped files
+		const newFiles = event.dataTransfer.files;
+
+		// Reference the input element
+		const fileInput = document.getElementById("file-upload");
+
+		// Create a new DataTransfer object and populate it with existing files
+		const dataTransfer = new DataTransfer();
+
+		// Add existing files from the input (if any)
+		Array.from(fileInput.files).forEach((file) => {
+			dataTransfer.items.add(file);
+		});
+
+		// Add new files from the drop event
+		Array.from(newFiles).forEach((file) => {
+			dataTransfer.items.add(file);
+		});
+
+		// Check file count
+		if (dataTransfer.files.length > 5) {
+			alert("You can upload a maximum of 5 files.");
+			fileInput.value = "";
+			updateFileList(fileInput);
+			return;
+		}
+
+		// Set the updated files back to the input
+		fileInput.files = dataTransfer.files;
+
+		// Log file names to confirm
+		for (let i = 0; i < fileInput.files.length; i++) {
+			console.log(fileInput.files[i].name);
+		}
+
+		// Update the file list in the UI
+		updateFileList(fileInput);
+	}
+
+  function updateFileList(input) {
+	console.log('updateFileList',input.files.length);
+    const fileList = document.getElementById("file-list");
+	fileList.innerHTML = ""; // Clear the existing file list
+	
     if (input.files.length > 5) {
-      alert("You can upload a maximum of 5 files.");
-      input.value = ""; // Clear the file input
-      return;
+		alert("You can upload a maximum of 5 files.");
+		input.value = ""; // Clear the file input
+      	return;
     }
 
     // Add each file to the list
-    Array.from(input.files).forEach((file, index) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = `${index + 1}. ${file.name}`;
-      fileList.appendChild(listItem);
+    Array.from(input.files).forEach((file,index) => {
+		console.log(file);
+		const listItem = document.createElement("li");
+		listItem.textContent = `${index + 1}. ${file.name}`;
+		fileList.appendChild(listItem);
     });
   }
 </script>
