@@ -1,8 +1,8 @@
 @font-face {
 	font-family: gbicons;
 	src:
-		url(/wp-content/themes/genesis-block-theme/inc/icons/webfonts/gbicons.woff2?61820902) format("woff2"),
-		url(/wp-content/themes/genesis-block-theme/inc/icons/webfonts/gbicons.woff?61820902) format("woff");
+		url(/HammondElectricalServices/wp-content/themes/genesis-block-theme/inc/icons/webfonts/gbicons.woff2?61820902) format("woff2"),
+		url(/HammondElectricalServices/wp-content/themes/genesis-block-theme/inc/icons/webfonts/gbicons.woff?61820902) format("woff");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;

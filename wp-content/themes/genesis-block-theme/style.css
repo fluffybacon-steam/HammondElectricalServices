@@ -732,7 +732,7 @@ select:focus {
 }
 
 select {
-	background: #fff url(/wp-content/themes/genesis-block-theme/images/angle-down.jpg) right no-repeat;
+	background: #fff url(/HammondElectricalServices/wp-content/themes/genesis-block-theme/images/angle-down.jpg) right no-repeat;
 	background-size: 12px;
 	background-position: right 15px top 20px;
 }
@@ -3903,7 +3903,7 @@ ul.wp-block-social-links,
 
 @font-face {
     font-family: Stencil std;
-    src: url(/wp-content/src/Stencil\ Std\ Bold.ttf);
+    src: url(/HammondElectricalServices/wp-content/src/Stencil\ Std\ Bold.ttf);
 	font-weight: normal;
 }
 
